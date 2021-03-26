@@ -68,6 +68,19 @@ namespace ConsoleAppExample
 }
 ```
 
+## Tests 
+
+Please include a json file called appsettings.test.json for your database connection string. 
+(Note tha it seems that using a memory database causes some trouble.)
+
+```
+{
+  "ConnectionStrings": {
+    "Default": "",
+  }
+}
+```
+
 ## Getting Help
 
 - [Casbin.NET](https://github.com/casbin/Casbin.NET)
