@@ -1,3 +1,17 @@
+# Testing settings 
+
+Please include, in the test project, a JSON file called appsettings.test.json for your database connection string. 
+(Note that it seems that using a memory database causes some trouble.)
+
+```
+{
+  "ConnectionStrings": {
+    "Default": "",
+  }
+}
+```
+
+
 # EF Core Adapter
 
 [![Actions Status](https://github.com/casbin-net/EFCore-Adapter/workflows/Build/badge.svg)](https://github.com/casbin-net/EFCore-Adapter/actions)
@@ -65,19 +79,6 @@ namespace ConsoleAppExample
             e.SavePolicy();
         }
     }
-}
-```
-
-## Tests 
-
-Please include a json file called appsettings.test.json for your database connection string. 
-(Note tha it seems that using a memory database causes some trouble.)
-
-```
-{
-  "ConnectionStrings": {
-    "Default": "",
-  }
 }
 ```
 
