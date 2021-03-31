@@ -54,6 +54,7 @@ namespace Casbin.Adapter.EFCore.UnitTest
                 V0 = "r.sub.Age > 18 && r.sub.Age < 60",
                 V1 = "/data1",
                 V2 = "read",
+                V3 = "formlang"
             });
 
             context.CasbinRule.Add(new CasbinRule<Guid>
@@ -61,7 +62,7 @@ namespace Casbin.Adapter.EFCore.UnitTest
                 PType = "p",
                 V0 = "bool.Parse(r.sub.IsTenantMember) == true",
                 V1 = "/data2",
-                V2 = "write",
+                V2 = "write"
             });
 
             context.SaveChanges();
@@ -73,12 +74,16 @@ namespace Casbin.Adapter.EFCore.UnitTest
             var adapter = new EFCoreAdapter<Guid>(_context);
             var enforcer = new Enforcer(_modelProvideFixture.GetNewAbacModel(), adapter);
 
-            enforcer.LoadPolicy();
+            enforcer.LoadFilteredPolicy(new Filter
+            {
+                P = new List<string> { "", "", "", "formlang" },
+            });
 
             var flag = enforcer.Enforce(new
             {
-                Age = 30
-            }, "/data1", "write");
+                Age = 30,
+                IsTenantMember = "false",
+            }, "/data1", "read");
 
             Assert.True(flag);
         }
