@@ -55,6 +55,15 @@ namespace Casbin.Adapter.EFCore.UnitTest
                 V1 = "/data1",
                 V2 = "read",
             });
+
+            context.CasbinRule.Add(new CasbinRule<Guid>
+            {
+                PType = "p",
+                V0 = "bool.Parse(r.sub.IsTenantMember) == true",
+                V1 = "/data2",
+                V2 = "write",
+            });
+
             context.SaveChanges();
         }
 
@@ -69,11 +78,28 @@ namespace Casbin.Adapter.EFCore.UnitTest
             var flag = enforcer.Enforce(new
             {
                 Age = 30
-            }, "/data1", "read");
+            }, "/data1", "write");
 
             Assert.True(flag);
         }
 
-    
+        [Fact]
+        public void TestTypConvertorAttribute()
+        {
+            var adapter = new EFCoreAdapter<Guid>(_context);
+            var enforcer = new Enforcer(_modelProvideFixture.GetNewAbacModel(), adapter);
+
+            enforcer.LoadPolicy();
+
+            var flag = enforcer.Enforce(new
+            {
+                IsTenantMember = "true",
+                Age = 30
+            }, "/data2", "write");
+
+            Assert.True(flag);
+        }
+
+
     }
 }
